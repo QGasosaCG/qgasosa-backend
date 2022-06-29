@@ -14,6 +14,8 @@ public class GasStation {
 
     private String address;
 
+    private String placeId;
+
     @OneToMany(mappedBy = "gasStation")
     private Set<GasStationFuel> fuels;
 
@@ -21,10 +23,11 @@ public class GasStation {
         this.fuels = new HashSet<>();
     }
 
-    public GasStation(String name, String address) {
+    public GasStation(String name, String address, String placeId) {
         this();
         this.name = name;
         this.address = address;
+        this.placeId = placeId;
     }
 
     public Long getId() {
@@ -59,7 +62,11 @@ public class GasStation {
         this.fuels = fuels;
     }
 
-    public void addFuel(Fuel fuel, Double price) {
-        this.fuels.add(new GasStationFuel(this, fuel, price));
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 }
