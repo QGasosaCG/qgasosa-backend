@@ -12,7 +12,8 @@ public class GasStation {
 
     private String name;
 
-    private String address;
+    @OneToOne
+    private Address address;
 
     @OneToMany(mappedBy = "gasStation")
     private Set<GasStationFuel> fuels;
@@ -21,7 +22,7 @@ public class GasStation {
         this.fuels = new HashSet<>();
     }
 
-    public GasStation(String name, String address) {
+    public GasStation(String name, Address address) {
         this();
         this.name = name;
         this.address = address;
@@ -43,11 +44,11 @@ public class GasStation {
         this.name = name;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
