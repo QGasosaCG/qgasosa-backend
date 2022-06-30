@@ -16,9 +16,6 @@ public class Address implements Serializable {
 
     private String longitude;
 
-    @OneToOne
-    private GasStation gasStation;
-
     public Address() {
     }
 
@@ -60,11 +57,7 @@ public class Address implements Serializable {
         this.longitude = longitude;
     }
 
-    public GasStation getGasStation() {
-        return gasStation;
-    }
-
-    public void setGasStation(GasStation gasStation) {
-        this.gasStation = gasStation;
+    public String getCoordinates() {
+        return latitude + "," + longitude;
     }
 }
