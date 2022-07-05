@@ -25,6 +25,10 @@ public class Address implements Serializable {
         this.longitude = longitude;
     }
 
+    public Address(String name) {
+        this(name, null, null);
+    }
+
     public Long getId() {
         return id;
     }

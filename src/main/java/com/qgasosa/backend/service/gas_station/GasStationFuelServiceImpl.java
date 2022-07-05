@@ -1,6 +1,7 @@
 package com.qgasosa.backend.service.gas_station;
 
 import com.qgasosa.backend.dto.XlsDTO;
+import com.qgasosa.backend.dto.XlsUnitDTO;
 import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.model.GasStationFuel;
@@ -23,40 +24,29 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     @Autowired
     private FuelService fuelService;
 
-    @Override
-    @Transactional
-    public void addFuelToGasStation(Long gasStationId, Long fuelId, Double price) {
-        GasStation gasStation = gasStationService.findGasStationById(gasStationId);
-        Fuel fuel = fuelService.findFuelById(fuelId);
+    private void updateGasStationFuel(XlsUnitDTO xlsUnit) {
+        String gasStationName = xlsUnit.getGasStationName();
+        String fuelName = xlsUnit.getFuelName();
+        Double price = xlsUnit.getNewPrice();
 
-        GasStationFuel gasStationFuel = new GasStationFuel(gasStation, fuel, price);
-        this.gasStationFuelRepository.save(gasStationFuel);
-    }
-
-    @Override
-    @Transactional
-    public void updateGasStationFuel(String gasStationName, String fuelName, Double price) {
-        GasStation gasStation = gasStationService.findGasStationByName(gasStationName);
-        Fuel fuel = fuelService.findFuelByName(fuelName);
+        GasStation gasStation = this.gasStationService.findGasStationByName(gasStationName);
+        Fuel fuel = this.fuelService.findFuelByName(fuelName);
 
         GasStationFuel gasStationFuel = this.gasStationFuelRepository.findByGasStation(gasStation).orElse(null);
 
         if (gasStationFuel != null && gasStationFuel.getFuel().equals(fuel)) {
             gasStationFuel.setPrice(price);
-            this.gasStationFuelRepository.save(gasStationFuel);
+        } else if (gasStationFuel == null && gasStation != null && fuel != null) {
+            gasStationFuel = new GasStationFuel(gasStation, fuel, price);
         }
+
+        this.gasStationFuelRepository.save(gasStationFuel);
     }
 
     @Override
     @Transactional
     public void updateGasStationFuelByXLS(XlsDTO xls) {
-        xls.getPayload().forEach(object -> {
-            String gasStationName = object.getGasStationName();
-            String fuelName = object.getFuelName();
-            Double newPrice = object.getNewPrice();
-
-            this.updateGasStationFuel(gasStationName, fuelName, newPrice);
-        });
+        xls.getPayload().forEach(this::updateGasStationFuel);
     }
 
 }

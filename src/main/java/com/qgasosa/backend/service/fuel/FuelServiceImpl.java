@@ -1,5 +1,6 @@
 package com.qgasosa.backend.service.fuel;
 
+import com.qgasosa.backend.exception.fuel.FuelNotFoundException;
 import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.repository.FuelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,12 @@ public class FuelServiceImpl implements FuelService {
 
     @Override
     public Fuel findFuelByName(String name) {
-        return this.fuelRepository.findByName(name).orElse(null);
+        return this.fuelRepository.findByName(name).orElseThrow(() -> new FuelNotFoundException(name));
     }
 
     @Override
     public Fuel findFuelById(Long id) {
-        return this.fuelRepository.findById(id).orElse(null);
+        return this.fuelRepository.findById(id).orElseThrow(() -> new FuelNotFoundException(id));
     }
 
     @Override
