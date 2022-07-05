@@ -7,6 +7,7 @@ import com.qgasosa.backend.service.admin.AdminService;
 import com.qgasosa.backend.service.gas_station.GasStationFuelService;
 import com.qgasosa.backend.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +24,11 @@ public class AdminApiController {
     GasStationFuelService gasStationFuelService;
 
     @RequestMapping(value = "/gas_station/{id}/fuel", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateGasStationPrice(@PathVariable("id") Long id, @RequestBody GasStationFuelDTO gasStationFuelDTO) {
+    public ResponseEntity<Void> updateGasStationPrice(@PathVariable("id") Long gasStationId, @RequestBody GasStationFuelDTO gasStationFuelDTO) {
 
-       // Optional<GasStationFuel> gasStationFuelOp =  gasStationFuelService;
+        this.adminService.updateGasStationPrice(gasStationId,gasStationFuelDTO);
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

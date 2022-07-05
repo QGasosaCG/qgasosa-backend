@@ -1,5 +1,6 @@
 package com.qgasosa.backend.service.gas_station;
 
+import com.qgasosa.backend.dto.GasStationFuelDTO;
 import com.qgasosa.backend.dto.XlsDTO;
 import com.qgasosa.backend.dto.XlsUnitDTO;
 import com.qgasosa.backend.model.Fuel;
@@ -48,5 +49,25 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     public void updateGasStationFuelByXLS(XlsDTO xls) {
         xls.getPayload().forEach(this::updateGasStationFuel);
     }
+
+    @Override
+    public void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
+
+        GasStation gasStation = this.gasStationService.findGasStationById(gasStationId);
+
+        Fuel fuel = this.fuelService.findFuelById(gasStationFuelDTO.fuelId());
+
+        GasStationFuel gasStationFuel = this.gasStationFuelRepository.findByGasStation(gasStation).orElse(null);
+
+        if (gasStationFuel != null && gasStationFuel.getFuel().equals(fuel)) {
+            gasStationFuel.setPrice(gasStationFuelDTO.price());
+        } else if (gasStationFuel == null && gasStation != null && fuel != null) {
+            gasStationFuel = new GasStationFuel(gasStation, fuel, gasStationFuelDTO.price());
+        }
+
+        this.gasStationFuelRepository.save(gasStationFuel);
+
+    }
+
 
 }
