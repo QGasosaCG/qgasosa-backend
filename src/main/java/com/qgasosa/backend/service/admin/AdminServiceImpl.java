@@ -4,7 +4,6 @@ import com.qgasosa.backend.dto.GasStationFuelDTO;
 import com.qgasosa.backend.model.Admin;
 import com.qgasosa.backend.repository.AdminRepository;
 import com.qgasosa.backend.service.gas_station.GasStationFuelService;
-import com.qgasosa.backend.service.gas_station.GasStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +12,6 @@ public class AdminServiceImpl implements AdminService{
 
     @Autowired
     private AdminRepository adminRepository;
-
-    @Autowired
-    private GasStationService gasStationService;
 
     @Autowired
     private GasStationFuelService gasStationFuelService;
@@ -30,6 +26,5 @@ public class AdminServiceImpl implements AdminService{
     public void updateGasStationPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
         this.gasStationFuelService.updateGasStationFuelPrice(gasStationId, gasStationFuelDTO);
     }
-
 
 }

@@ -33,6 +33,11 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
         GasStation gasStation = this.gasStationService.findGasStationByName(gasStationName);
         Fuel fuel = this.fuelService.findFuelByName(fuelName);
 
+        GasStationFuel gasStationFuel = updateGasStationFuel(price, gasStation, fuel);
+        this.gasStationFuelRepository.save(gasStationFuel);
+    }
+
+    private GasStationFuel updateGasStationFuel(Double price, GasStation gasStation, Fuel fuel) {
         GasStationFuel gasStationFuel = this.gasStationFuelRepository.findByGasStation(gasStation).orElse(null);
 
         if (gasStationFuel != null && gasStationFuel.getFuel().equals(fuel)) {
@@ -41,7 +46,7 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
             gasStationFuel = new GasStationFuel(gasStation, fuel, price);
         }
 
-        this.gasStationFuelRepository.save(gasStationFuel);
+        return gasStationFuel;
     }
 
     @Override
@@ -57,17 +62,8 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
 
         Fuel fuel = this.fuelService.findFuelById(gasStationFuelDTO.fuelId());
 
-        GasStationFuel gasStationFuel = this.gasStationFuelRepository.findByGasStation(gasStation).orElse(null);
-
-        if (gasStationFuel != null && gasStationFuel.getFuel().equals(fuel)) {
-            gasStationFuel.setPrice(gasStationFuelDTO.price());
-        } else if (gasStationFuel == null && gasStation != null && fuel != null) {
-            gasStationFuel = new GasStationFuel(gasStation, fuel, gasStationFuelDTO.price());
-        }
-
+        GasStationFuel gasStationFuel = updateGasStationFuel(gasStationFuelDTO.price(), gasStation, fuel);
         this.gasStationFuelRepository.save(gasStationFuel);
-
     }
-
 
 }
