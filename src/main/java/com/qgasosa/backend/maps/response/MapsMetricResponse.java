@@ -1,6 +1,6 @@
-package com.qgasosa.backend.client;
+package com.qgasosa.backend.maps.response;
 
-public class Metric {
+public class MapsMetricResponse {
     private String text;
     private Integer value;
 
@@ -8,16 +8,8 @@ public class Metric {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public Integer getValue() {
         return value;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
     }
 
     @Override
