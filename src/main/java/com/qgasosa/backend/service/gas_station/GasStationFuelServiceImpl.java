@@ -26,9 +26,9 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     private FuelService fuelService;
 
     private void updateGasStationFuel(XlsUnitDTO xlsUnit) {
-        String gasStationName = xlsUnit.getGasStationName();
-        String fuelName = xlsUnit.getFuelName();
-        Double price = xlsUnit.getNewPrice();
+        String gasStationName = xlsUnit.gasStationName();
+        String fuelName = xlsUnit.fuelName();
+        Double price = xlsUnit.newPrice();
 
         GasStation gasStation = this.gasStationService.findGasStationByName(gasStationName);
         Fuel fuel = this.fuelService.findFuelByName(fuelName);
@@ -52,7 +52,7 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     @Override
     @Transactional
     public void updateGasStationFuelByXLS(XlsDTO xls) {
-        xls.getPayload().forEach(this::updateGasStationFuel);
+        xls.payload().forEach(this::updateGasStationFuel);
     }
 
     @Override
