@@ -96,3 +96,276 @@ VALUES (6, 'ETANOL HIDRATADO');
 
 INSERT INTO fuel (id, name)
 VALUES (7, 'GNV');
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (1, 1, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (2, 1, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (3, 1, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (4, 1, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (5, 1, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (6, 1, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (7, 1, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (8, 2, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (9, 2, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (10, 2, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (11, 2, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (12, 2, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (13, 2, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (14, 2, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (15, 3, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (16, 3, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (17, 3, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (18, 3, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (19, 3, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (20, 3, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (21, 3, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (22, 4, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (23, 4, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (24, 4, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (25, 4, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (26, 4, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (27, 4, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (28, 4, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (29, 5, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (30, 5, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (31, 5, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (32, 5, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (33, 5, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (34, 5, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (35, 5, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (36, 6, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (37, 6, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (38, 6, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (39, 6, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (40, 6, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (41, 6, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (42, 6, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (43, 7, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (44, 7, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (45, 7, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (46, 7, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (47, 7, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (48, 7, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (49, 7, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (50, 8, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (51, 8, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (52, 8, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (53, 8, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (54, 8, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (55, 8, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (56, 8, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (57, 9, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (58, 9, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (59, 9, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (60, 9, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (61, 9, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (62, 9, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (63, 9, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (64, 10, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (65, 10, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (66, 10, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (67, 10, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (68, 10, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (69, 10, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (70, 10, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (71, 11, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (72, 11, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (73, 11, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (74, 11, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (75, 11, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (76, 11, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (77, 11, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (78, 12, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (79, 12, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (80, 12, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (81, 12, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (82, 12, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (83, 12, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (84, 12, 7, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (85, 13, 1, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (86, 13, 2, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (87, 13, 3, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (88, 13, 4, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (89, 13, 5, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (90, 13, 6, 0);
+
+INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
+VALUES (91, 13, 7, 0);
