@@ -20,7 +20,7 @@ public class XlsApiController {
     private final static Logger logger = LogManager.getLogger(XlsApiController.class);
 
     @Autowired
-    GasStationFuelService gasStationFuelService;
+    private GasStationFuelService gasStationFuelService;
 
     @PutMapping("/update")
     public ResponseEntity<Void> updateGasStations(@RequestBody XlsDTO xlsDTO) {

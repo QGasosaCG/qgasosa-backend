@@ -10,11 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(Constants.API_PREFFIX + "/admin")
+@RequestMapping(Constants.API_BASE_URL + "/admin")
 public class AdminApiController {
 
     @Autowired
-    AdminService adminService;
+    private AdminService adminService;
 
     @RequestMapping(value = "/gas_station/{id}/fuel", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateGasStationPrice(@PathVariable("id") Long gasStationId, @RequestBody GasStationFuelDTO gasStationFuelDTO) {
