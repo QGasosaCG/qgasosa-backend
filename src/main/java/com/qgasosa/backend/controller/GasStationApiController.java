@@ -1,6 +1,6 @@
 package com.qgasosa.backend.controller;
 
-import com.qgasosa.backend.controller.response.ClosestGasStationResponse;
+import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.service.gas_station.GasStationService;
 import com.qgasosa.backend.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,11 @@ public class GasStationApiController {
     @Autowired
     private GasStationService gasStationService;
 
-    @RequestMapping(value = "/closest", method = RequestMethod.GET)
-    public ResponseEntity<List<ClosestGasStationResponse>> getClosestGasStation(
-            @RequestParam("latitude") String originLatitude, @RequestParam("longitude") String originLongitude) throws IOException {
-        List<ClosestGasStationResponse> closest = this.gasStationService.getClosestGasStation(originLatitude, originLongitude);
-        return new ResponseEntity<>(closest, HttpStatus.OK);
+    @GetMapping(value = "/closest")
+    public ResponseEntity<List<GasStationDistanceResponse>> getClosestGasStation(
+            @RequestParam("latitude") String originLatitude,
+            @RequestParam("longitude") String originLongitude) throws IOException {
+        List<GasStationDistanceResponse> closestGasStations = this.gasStationService.findClosestGasStations(originLatitude, originLongitude);
+        return new ResponseEntity<>(closestGasStations, HttpStatus.OK);
     }
 }

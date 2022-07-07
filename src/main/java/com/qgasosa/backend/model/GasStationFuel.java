@@ -1,17 +1,22 @@
 package com.qgasosa.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
 public class GasStationFuel {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "gas_station_id")
     private GasStation gasStation;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "fuel_id")
     private Fuel fuel;
@@ -45,6 +50,10 @@ public class GasStationFuel {
 
     public Fuel getFuel() {
         return fuel;
+    }
+
+    public String getFuelName() {
+        return fuel.getName();
     }
 
     public void setFuel(Fuel fuel) {
