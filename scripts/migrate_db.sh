@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_PATH=/home/jonatas/qgasosa/qgasosa-backend
+APP_PATH=/home/luiz/Documentos/UFCG/engenharia-de-software/qgasosa-backend
 MIGRATIONS_DIR=$APP_PATH/src/main/resources/db/migration
 
 for file in $MIGRATIONS_DIR/*.sql; do
