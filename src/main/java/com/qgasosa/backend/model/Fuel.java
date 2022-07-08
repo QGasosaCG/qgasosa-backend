@@ -1,5 +1,7 @@
 package com.qgasosa.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,7 @@ public class Fuel {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "fuel")
     private Set<GasStationFuel> gasStations;
 

@@ -3,18 +3,25 @@ package com.qgasosa.backend.service.gas_station;
 import com.qgasosa.backend.dto.GasStationFuelDTO;
 import com.qgasosa.backend.dto.XlsDTO;
 import com.qgasosa.backend.dto.XlsUnitDTO;
+import com.qgasosa.backend.exception.fuel.FuelNotFoundException;
+import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
 import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.model.GasStationFuel;
 import com.qgasosa.backend.repository.GasStationFuelRepository;
 import com.qgasosa.backend.service.fuel.FuelService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 @Service
 public class GasStationFuelServiceImpl implements GasStationFuelService {
+
+    private final Logger logger = LogManager.getLogger(GasStationFuelServiceImpl.class);
 
     @Autowired
     private GasStationService gasStationService;
@@ -38,21 +45,32 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     }
 
     private GasStationFuel updateGasStationFuel(Double price, GasStation gasStation, Fuel fuel) {
-        GasStationFuel gasStationFuel = this.gasStationFuelRepository.findByGasStation(gasStation).orElse(null);
+        Collection<GasStationFuel> gasStationFuels = this.gasStationFuelRepository.findByGasStation(gasStation);
 
-        if (gasStationFuel != null && gasStationFuel.getFuel().equals(fuel)) {
-            gasStationFuel.setPrice(price);
-        } else if (gasStationFuel == null && gasStation != null && fuel != null) {
-            gasStationFuel = new GasStationFuel(gasStation, fuel, price);
+        GasStationFuel updatedGasStation = null;
+        for (GasStationFuel gasStationFuel : gasStationFuels) {
+            if (gasStationFuel.getFuel().equals(fuel)) {
+                gasStationFuel.setPrice(price);
+                updatedGasStation = gasStationFuel;
+                break;
+            }
         }
 
-        return gasStationFuel;
+        return updatedGasStation;
     }
 
     @Override
     @Transactional
     public void updateGasStationFuelByXLS(XlsDTO xls) {
-        xls.payload().forEach(this::updateGasStationFuel);
+        for (XlsUnitDTO xlsUnitDTO : xls.payload()) {
+            try {
+                this.updateGasStationFuel(xlsUnitDTO);
+                logger.info(String.format("Updated gas station %s fuel %s price to %.4f", xlsUnitDTO.gasStationName(), xlsUnitDTO.fuelName(), xlsUnitDTO.newPrice()));
+            } catch (GasStationNotFoundException | FuelNotFoundException e) {
+                logger.error(e.getMessage());
+                continue;
+            }
+        }
     }
 
     @Override

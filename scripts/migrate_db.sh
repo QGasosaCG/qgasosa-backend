@@ -1,8 +1,5 @@
 #!/bin/bash
 
-APP_PATH=/home/luiz/Documentos/UFCG/engenharia-de-software/qgasosa-backend
-MIGRATIONS_DIR=$APP_PATH/src/main/resources/db/migration
+APP_PATH=/home/jonatas/qgasosa/qgasosa-backend
 
-for file in $MIGRATIONS_DIR/*.sql; do
-  docker exec -i qgasosa-db psql -U postgres postgres < $file
-done
+cd $APP_PATH && mvn clean flyway:migrate -DflywayConf=flyway.conf

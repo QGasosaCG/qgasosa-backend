@@ -1,5 +1,6 @@
 package com.qgasosa.backend.exception;
 
+import com.qgasosa.backend.exception.common.InternalErrorException;
 import com.qgasosa.backend.exception.common.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> notFoundExceptionHandler(RuntimeException exception, HttpServletRequest req) {
         return this.buildErrorResponseEntity(exception, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InternalErrorException.class)
+    public ResponseEntity<ErrorResponse> internalErrorException(RuntimeException exception, HttpServletRequest req) {
+        return this.buildErrorResponseEntity(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<ErrorResponse> buildErrorResponseEntity(RuntimeException exception, HttpStatus statusCode) {
