@@ -1,5 +1,7 @@
 package com.qgasosa.backend.service.gas_station;
 
+import com.qgasosa.backend.dto.GasStationDTO;
+import com.qgasosa.backend.exception.gas_station.GasSatationAlreadyExists;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
 import com.qgasosa.backend.maps.MapsClient;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +23,7 @@ import java.util.List;
 @Service
 public class GasStationServiceImpl implements GasStationService {
 
-    private static final Logger logger = LogManager.getLogger(GasStationServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(GasStationServiceImpl.class);
 
     @Autowired
     private GasStationRepository gasStationRepository;
@@ -41,6 +44,37 @@ public class GasStationServiceImpl implements GasStationService {
     @Override
     public GasStation findGasStationById(Long id) {
         return this.gasStationRepository.findById(id).orElseThrow(() -> new GasStationNotFoundException(id));
+    }
+
+    @Override
+    public GasStation addGasStation(GasStationDTO gasStationDTO) {
+        Optional<GasStation> gasStationOp = this.gasStationRepository.findByName(gasStationDTO.name());
+
+        if(gasStationOp.isPresent()){
+            throw new GasSatationAlreadyExists(gasStationDTO.name());
+        }
+
+        GasStation gasStation = new GasStation(gasStationDTO.name(), gasStationDTO.address());
+
+        this.saveGasStation(gasStation);
+
+        return gasStation;
+    }
+
+    @Override
+    public GasStation updateGasStation(Long id, GasStationDTO gasStationDTO) {
+        GasStation gasStation = this.findGasStationById(id);
+
+        if(gasStation == null) {
+            throw new GasStationNotFoundException(gasStationDTO.name());
+        }
+
+        gasStation.setAddress(gasStationDTO.address());
+        gasStation.setName(gasStationDTO.name());
+
+        this.saveGasStation(gasStation);
+
+        return gasStation;
     }
 
     @Override
