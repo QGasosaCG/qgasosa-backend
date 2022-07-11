@@ -1,7 +1,7 @@
 package com.qgasosa.backend.service.gas_station;
 
 import com.qgasosa.backend.dto.GasStationDTO;
-import com.qgasosa.backend.exception.gas_station.GasSatationAlreadyExists;
+import com.qgasosa.backend.exception.gas_station.GasStationAlreadyExistsException;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
 import com.qgasosa.backend.maps.MapsClient;
@@ -51,7 +51,7 @@ public class GasStationServiceImpl implements GasStationService {
         Optional<GasStation> gasStationOp = this.gasStationRepository.findByName(gasStationDTO.name());
 
         if(gasStationOp.isPresent()){
-            throw new GasSatationAlreadyExists(gasStationDTO.name());
+            throw new GasStationAlreadyExistsException(gasStationDTO.name());
         }
 
         GasStation gasStation = new GasStation(gasStationDTO.name(), gasStationDTO.address());
