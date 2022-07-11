@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class GasStationServiceImpl implements GasStationService {
 
-    private static final Logger logger = LogManager.getLogger(GasStationServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(GasStationServiceImpl.class);
 
     @Autowired
     private GasStationRepository gasStationRepository;
@@ -48,13 +48,13 @@ public class GasStationServiceImpl implements GasStationService {
 
     @Override
     public GasStation addGasStation(GasStationDTO gasStationDTO) {
-        Optional<GasStation> gasStationOp = this.gasStationRepository.findByName(gasStationDTO.getName());
+        Optional<GasStation> gasStationOp = this.gasStationRepository.findByName(gasStationDTO.name());
 
         if(gasStationOp.isPresent()){
-            throw new GasSatationAlreadyExists(gasStationDTO.getName());
+            throw new GasSatationAlreadyExists(gasStationDTO.name());
         }
 
-        GasStation gasStation = new GasStation(gasStationDTO.getName(), gasStationDTO.getAddress());
+        GasStation gasStation = new GasStation(gasStationDTO.name(), gasStationDTO.address());
 
         this.saveGasStation(gasStation);
 
@@ -62,22 +62,15 @@ public class GasStationServiceImpl implements GasStationService {
     }
 
     @Override
-    public List<GasStation> findAllGasStation() {
-        List<GasStation> gasStations = this.gasStationRepository.findAll();
-
-        return gasStations;
-    }
-
-    @Override
     public GasStation updateGasStation(Long id, GasStationDTO gasStationDTO) {
         GasStation gasStation = this.findGasStationById(id);
 
         if(gasStation == null) {
-            throw new GasStationNotFoundException(gasStationDTO.getName());
+            throw new GasStationNotFoundException(gasStationDTO.name());
         }
 
-        gasStation.setAddress(gasStationDTO.getAddress());
-        gasStation.setName(gasStationDTO.getName());
+        gasStation.setAddress(gasStationDTO.address());
+        gasStation.setName(gasStationDTO.name());
 
         this.saveGasStation(gasStation);
 

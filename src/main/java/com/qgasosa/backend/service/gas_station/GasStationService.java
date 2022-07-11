@@ -13,8 +13,6 @@ public interface GasStationService {
 
     GasStation findGasStationByName(String name);
 
-    public List<GasStation> findAllGasStation();
-
     GasStation findGasStationById(Long id);
 
     GasStation addGasStation(GasStationDTO gasStationDTO);
