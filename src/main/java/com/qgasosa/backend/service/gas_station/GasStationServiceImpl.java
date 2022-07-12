@@ -1,10 +1,13 @@
 package com.qgasosa.backend.service.gas_station;
 
+import com.qgasosa.backend.controller.response.GasStationCheapestPriceResponse;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
 import com.qgasosa.backend.maps.MapsClient;
 import com.qgasosa.backend.maps.response.MapsMetricResponse;
+import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.model.GasStation;
+import com.qgasosa.backend.model.GasStationFuel;
 import com.qgasosa.backend.repository.GasStationRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,7 +57,7 @@ public class GasStationServiceImpl implements GasStationService {
         List<GasStation> gasStations = this.findAllGasStations();
         List<GasStationDistanceResponse> closestGasStations = new ArrayList<>();
 
-        for (GasStation gasStation: gasStations) {
+        for (GasStation gasStation : gasStations) {
             MapsMetricResponse distance = mapsClient.getDistance(originLatitude, originLongitude, gasStation);
             closestGasStations.add(new GasStationDistanceResponse(gasStation, distance));
         }
@@ -62,5 +65,27 @@ public class GasStationServiceImpl implements GasStationService {
         Collections.sort(closestGasStations);
 
         return closestGasStations;
+    }
+
+    @Override
+    public GasStationCheapestPriceResponse findCheapestGasStation(Fuel fuel) {
+        List<GasStation> gasStationList = this.gasStationRepository.findAll();
+        GasStation cheapest = gasStationList.get(0);
+        GasStationFuel cheapestFuel = null;
+
+        for (GasStation station : gasStationList) {
+            for (GasStationFuel gFuel : station.getFuels()) {
+                if (gFuel.getFuelName().equals(fuel.getName())) {
+                    if (cheapestFuel == null && gFuel.getPrice() > 0) {
+                        cheapestFuel = gFuel;
+                    } else if (gFuel.getPrice().compareTo(cheapestFuel.getPrice()) < 0 && gFuel.getPrice() > 0) {
+                        cheapestFuel = gFuel;
+                        cheapest = station;
+                    }
+                }
+            }
+        }
+
+        return new GasStationCheapestPriceResponse(cheapest, cheapestFuel.getPrice());
     }
 }

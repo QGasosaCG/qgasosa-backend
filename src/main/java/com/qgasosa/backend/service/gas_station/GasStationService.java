@@ -1,6 +1,8 @@
 package com.qgasosa.backend.service.gas_station;
 
+import com.qgasosa.backend.controller.response.GasStationCheapestPriceResponse;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
+import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.model.GasStation;
 
 import java.io.IOException;
@@ -17,4 +19,6 @@ public interface GasStationService {
     void saveGasStation(GasStation gasStation);
 
     List<GasStationDistanceResponse> findClosestGasStations(String gasStationLat, String gasStationLong) throws IOException;
+
+    GasStationCheapestPriceResponse findCheapestGasStation(Fuel fuel);
 }
