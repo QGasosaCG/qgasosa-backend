@@ -1,8 +1,10 @@
 package com.qgasosa.backend.controller;
 
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
+import com.qgasosa.backend.controller.response.GasStationFuelDistanceResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
+import com.qgasosa.backend.service.gas_station.GasStationFuelService;
 import com.qgasosa.backend.service.gas_station.GasStationService;
 import com.qgasosa.backend.util.Constants;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +26,9 @@ public class GasStationApiController {
     @Autowired
     private GasStationService gasStationService;
 
+    @Autowired
+    private GasStationFuelService gasStationFuelService;
+
     @GetMapping(value = "/closest")
     public ResponseEntity<List<GasStationDistanceResponse>> getClosestGasStation(
             @RequestParam("latitude") String originLatitude,
@@ -32,6 +37,18 @@ public class GasStationApiController {
 
         List<GasStationDistanceResponse> closestGasStations = this.gasStationService.findClosestGasStations(originLatitude, originLongitude);
         return new ResponseEntity<>(closestGasStations, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/better")
+    public ResponseEntity<List<GasStationFuelDistanceResponse>> getBetterGasStation(
+            @RequestParam("latitude") String originLatitude,
+            @RequestParam("longitude") String originLongitude,
+            @RequestParam("consumption")Double consumption) throws IOException {
+        this.logger.info(String.format("Requesting the best gas stations from %s %s %s", originLatitude,
+                originLongitude, consumption));
+
+        List<GasStationFuelDistanceResponse> betterGasStations = this.gasStationFuelService.findBetterGasStations(originLatitude, originLongitude, consumption);
+        return new ResponseEntity<>(betterGasStations, HttpStatus.OK);
     }
 
     @PostMapping(value = "/")
