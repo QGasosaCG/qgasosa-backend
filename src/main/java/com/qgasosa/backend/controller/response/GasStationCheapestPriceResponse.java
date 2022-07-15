@@ -20,7 +20,7 @@ public class GasStationCheapestPriceResponse {
         return gasStation;
     }
 
-    public Double getDistance() {
+    public Double getPrice() {
         return price;
     }
 
