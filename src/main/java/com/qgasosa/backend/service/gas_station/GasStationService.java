@@ -1,5 +1,6 @@
 package com.qgasosa.backend.service.gas_station;
 
+import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
 
@@ -15,11 +16,13 @@ public interface GasStationService {
 
     GasStation findGasStationById(Long id);
 
-    GasStation addGasStation(GasStationDTO gasStationDTO);
+    GasStation createGasStation(GasStationDTO gasStationDTO);
 
     GasStation updateGasStation(Long id, GasStationDTO gasStationDTO);
 
     void saveGasStation(GasStation gasStation);
 
-    List<GasStationDistanceResponse> findClosestGasStations(String gasStationLat, String gasStationLong) throws IOException;
+    List<GasStationDistanceResponse> findClosestGasStations(String originLatitude, String originLongitude) throws IOException;
+
+    List<BestGasStationResponse> findBestGasStations(String originLatitude, String originLongitude, Double consumption) throws IOException;
 }

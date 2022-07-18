@@ -1,6 +1,7 @@
 package com.qgasosa.backend.controller;
 
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
+import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.service.gas_station.GasStationService;
@@ -25,7 +26,7 @@ public class GasStationApiController {
     private GasStationService gasStationService;
 
     @GetMapping(value = "/closest")
-    public ResponseEntity<List<GasStationDistanceResponse>> getClosestGasStation(
+    public ResponseEntity<List<GasStationDistanceResponse>> getClosestGasStations(
             @RequestParam("latitude") String originLatitude,
             @RequestParam("longitude") String originLongitude) throws IOException {
         this.logger.info(String.format("Requesting closest gas stations from %s,%s", originLatitude, originLongitude));
@@ -34,10 +35,21 @@ public class GasStationApiController {
         return new ResponseEntity<>(closestGasStations, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/cost-benefit")
+    public ResponseEntity<List<BestGasStationResponse>> getBestGasStations(
+            @RequestParam("latitude") String originLatitude,
+            @RequestParam("longitude") String originLongitude,
+            @RequestParam("consumption") Double consumption) throws IOException {
+        this.logger.info(String.format("Requesting the best gas stations from %s %s with consumption %.2f", originLatitude, originLongitude, consumption));
+
+        List<BestGasStationResponse> betterGasStations = this.gasStationService.findBestGasStations(originLatitude, originLongitude, consumption);
+        return new ResponseEntity<>(betterGasStations, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/")
     public ResponseEntity<GasStation> createGasStation(@RequestBody GasStationDTO gasStationDTO) {
         this.logger.info(String.format("Creating gas station with payload %s", gasStationDTO));
-        GasStation gasStation = gasStationService.addGasStation(gasStationDTO);
+        GasStation gasStation = gasStationService.createGasStation(gasStationDTO);
 
         return new ResponseEntity<>(gasStation, HttpStatus.CREATED);
     }
