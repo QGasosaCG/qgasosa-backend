@@ -1,14 +1,11 @@
 package com.qgasosa.backend.service.gas_station;
 
 
-import com.qgasosa.backend.controller.response.GasStationFuelDistanceResponse;
 import com.qgasosa.backend.dto.GasStationFuelDTO;
 import com.qgasosa.backend.dto.XlsDTO;
 import com.qgasosa.backend.dto.XlsUnitDTO;
 import com.qgasosa.backend.exception.fuel.FuelNotFoundException;
 import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
-import com.qgasosa.backend.maps.MapsClient;
-import com.qgasosa.backend.maps.response.MapsMetricResponse;
 import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.model.GasStationFuel;
@@ -20,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -36,9 +32,6 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
 
     @Autowired
     private FuelService fuelService;
-
-    @Autowired
-    private MapsClient mapsClient;
 
     private void updateGasStationFuel(XlsUnitDTO xlsUnit) {
         String gasStationName = xlsUnit.gasStationName();
@@ -83,7 +76,6 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
 
     @Override
     public void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
-
         GasStation gasStation = this.gasStationService.findGasStationById(gasStationId);
 
         Fuel fuel = this.fuelService.findFuelById(gasStationFuelDTO.fuelId());
@@ -93,26 +85,8 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     }
 
     @Override
-    public List<GasStationFuelDistanceResponse> findBetterGasStations(String originalLatitude, String originalLongitude, Double consumption) throws IOException {
-        List<GasStationFuel> gasStationFuels = this.gasStationFuelRepository.findAll();
-        List<GasStationFuelDistanceResponse> betterGasStations = new ArrayList<>();
-
-        for (GasStationFuel gasStationFuel : gasStationFuels) {
-            MapsMetricResponse distance =  mapsClient.getDistance(originalLatitude, originalLongitude, gasStationFuel);
-
-            Double cost = this.calculateCost(distance, consumption, gasStationFuel.getPrice());
-            
-            betterGasStations.add(new GasStationFuelDistanceResponse(gasStationFuel,distance,cost));
-        }
-
-        Collections.sort(betterGasStations);
-        betterGasStations.sort(Comparator.comparing(GasStationFuelDistanceResponse::getCost));
-
-        return betterGasStations;
-    }
-
-    private Double calculateCost(MapsMetricResponse distance, Double consumption, Double price) {
-        return (distance.getValue() / consumption) * price;
+    public List<GasStationFuel> findAllGasStations() {
+        return this.gasStationFuelRepository.findAll();
     }
 
 }

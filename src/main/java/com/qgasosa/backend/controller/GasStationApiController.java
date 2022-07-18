@@ -1,10 +1,9 @@
 package com.qgasosa.backend.controller;
 
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
-import com.qgasosa.backend.controller.response.GasStationFuelDistanceResponse;
+import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
-import com.qgasosa.backend.service.gas_station.GasStationFuelService;
 import com.qgasosa.backend.service.gas_station.GasStationService;
 import com.qgasosa.backend.util.Constants;
 import org.apache.logging.log4j.LogManager;
@@ -26,11 +25,8 @@ public class GasStationApiController {
     @Autowired
     private GasStationService gasStationService;
 
-    @Autowired
-    private GasStationFuelService gasStationFuelService;
-
     @GetMapping(value = "/closest")
-    public ResponseEntity<List<GasStationDistanceResponse>> getClosestGasStation(
+    public ResponseEntity<List<GasStationDistanceResponse>> getClosestGasStations(
             @RequestParam("latitude") String originLatitude,
             @RequestParam("longitude") String originLongitude) throws IOException {
         this.logger.info(String.format("Requesting closest gas stations from %s,%s", originLatitude, originLongitude));
@@ -39,22 +35,21 @@ public class GasStationApiController {
         return new ResponseEntity<>(closestGasStations, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/better")
-    public ResponseEntity<List<GasStationFuelDistanceResponse>> getBetterGasStation(
+    @GetMapping(value = "/cost-benefit")
+    public ResponseEntity<List<BestGasStationResponse>> getBestGasStations(
             @RequestParam("latitude") String originLatitude,
             @RequestParam("longitude") String originLongitude,
-            @RequestParam("consumption")Double consumption) throws IOException {
-        this.logger.info(String.format("Requesting the best gas stations from %s %s %s", originLatitude,
-                originLongitude, consumption));
+            @RequestParam("consumption") Double consumption) throws IOException {
+        this.logger.info(String.format("Requesting the best gas stations from %s %s with consumption %.2f", originLatitude, originLongitude, consumption));
 
-        List<GasStationFuelDistanceResponse> betterGasStations = this.gasStationFuelService.findBetterGasStations(originLatitude, originLongitude, consumption);
+        List<BestGasStationResponse> betterGasStations = this.gasStationService.findBestGasStations(originLatitude, originLongitude, consumption);
         return new ResponseEntity<>(betterGasStations, HttpStatus.OK);
     }
 
     @PostMapping(value = "/")
     public ResponseEntity<GasStation> createGasStation(@RequestBody GasStationDTO gasStationDTO) {
         this.logger.info(String.format("Creating gas station with payload %s", gasStationDTO));
-        GasStation gasStation = gasStationService.addGasStation(gasStationDTO);
+        GasStation gasStation = gasStationService.createGasStation(gasStationDTO);
 
         return new ResponseEntity<>(gasStation, HttpStatus.CREATED);
     }
