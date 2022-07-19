@@ -11,4 +11,6 @@ public interface AdminService {
     Admin findAdminById(Long id);
 
     void updateGasStationPrice(Long gasStationId,GasStationFuelDTO gasStationFuelDTO);
+
+    void validateInvoice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO);
 }
