@@ -55,8 +55,6 @@ public class GasStationServiceImpl implements GasStationService {
 
     @Override
     @Transactional
-    public GasStation addGasStation(GasStationDTO gasStationDTO) {
-    @Transactional
     public GasStation createGasStation(GasStationDTO gasStationDTO) {
         Optional<GasStation> gasStationOp = this.gasStationRepository.findByName(gasStationDTO.name());
 
@@ -72,8 +70,6 @@ public class GasStationServiceImpl implements GasStationService {
     }
 
     @Override
-    @Transactional
-    public GasStation updateGasStation(Long id, GasStationDTO gasStationDTO) {
     @Transactional
     public void updateGasStation(Long id, GasStationDTO gasStationDTO) {
         GasStation gasStation = this.findGasStationById(id);
