@@ -1,7 +1,5 @@
 package com.qgasosa.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -64,5 +62,21 @@ public class GasStation {
 
     public void addFuel(Fuel fuel, Double price) {
         this.fuels.add(new GasStationFuel(this, fuel, price));
+    }
+
+    public int compareTo(GasStation o, Fuel fuel) {
+        GasStationFuel toBeCompared = null;
+        for (GasStationFuel g: o.fuels) {
+            if (g.getFuelName().equals(fuel.getName())) {
+                toBeCompared = g;
+            }
+        }
+
+        for (GasStationFuel g: this.fuels) {
+            if (g.getFuelName().equals(fuel.getName())) {
+                return g.getPrice().compareTo(toBeCompared.getPrice());
+            }
+        }
+        return 0;
     }
 }

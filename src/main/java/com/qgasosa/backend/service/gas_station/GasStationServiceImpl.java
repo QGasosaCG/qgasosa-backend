@@ -102,24 +102,25 @@ public class GasStationServiceImpl implements GasStationService {
     }
 
     @Override
-    public GasStationCheapestPriceResponse findCheapestGasStation(Fuel fuel) {
-        List<GasStation> gasStationList = this.gasStationRepository.findAll();
-        GasStation cheapest = gasStationList.get(0);
-        GasStationFuel cheapestFuel = null;
+    public List<GasStationCheapestPriceResponse> findCheapestGasStation(Fuel fuel) {
+        List<GasStation> gasStations = this.gasStationRepository.findAll();
+        List<GasStationCheapestPriceResponse> gasStationCheapestPriceResponses = new ArrayList<>();
 
-        for (GasStation station : gasStationList) {
-            for (GasStationFuel gFuel : station.getFuels()) {
-                if (gFuel.getFuelName().equals(fuel.getName())) {
-                    if (cheapestFuel == null && gFuel.getPrice() > 0) {
-                        cheapestFuel = gFuel;
-                    } else if (gFuel.getPrice().compareTo(cheapestFuel.getPrice()) < 0 && gFuel.getPrice() > 0) {
-                        cheapestFuel = gFuel;
-                        cheapest = station;
-                    }
+        for (GasStation gasStation : gasStations) {
+            Double price = 0.0;
+            for (GasStationFuel gas: gasStation.getFuels()) {
+                if (gas.getFuelName().equals(fuel.getName())) {
+                    price = gas.getPrice();
                 }
+
+            }
+            if (price > 0) {
+                gasStationCheapestPriceResponses.add(new GasStationCheapestPriceResponse(gasStation, price));
             }
         }
 
-        return new GasStationCheapestPriceResponse(cheapest, cheapestFuel.getPrice());
+        Collections.sort(gasStationCheapestPriceResponses);
+
+        return gasStationCheapestPriceResponses;
     }
 }

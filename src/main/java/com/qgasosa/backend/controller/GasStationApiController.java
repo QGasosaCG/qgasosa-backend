@@ -5,7 +5,6 @@ import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.model.Fuel;
-import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.service.fuel.FuelService;
 import com.qgasosa.backend.service.gas_station.GasStationService;
 import com.qgasosa.backend.util.Constants;
@@ -63,10 +62,10 @@ public class GasStationApiController {
     }
 
     @GetMapping(value = "/cheapest")
-    public ResponseEntity<GasStationCheapestPriceResponse> getCheapestGasStation(
+    public ResponseEntity<List<GasStationCheapestPriceResponse>> getCheapestGasStations(
             @RequestParam("fuelName") String fuelName) {
         Fuel fuel = this.fuelService.findFuelByName(fuelName);
-        GasStationCheapestPriceResponse cheapestGasStation = this.gasStationService.findCheapestGasStation(fuel);
-        return new ResponseEntity<>(cheapestGasStation, HttpStatus.OK);
+        List<GasStationCheapestPriceResponse> cheapestGasStations = this.gasStationService.findCheapestGasStation(fuel);
+        return new ResponseEntity<>(cheapestGasStations, HttpStatus.OK);
     }
 }

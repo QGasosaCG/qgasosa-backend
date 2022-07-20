@@ -26,5 +26,5 @@ public interface GasStationService {
 
     List<GasStationDistanceResponse> findClosestGasStations(String gasStationLat, String gasStationLong) throws IOException;
 
-    GasStationCheapestPriceResponse findCheapestGasStation(Fuel fuel);
+    List<GasStationCheapestPriceResponse> findCheapestGasStation(Fuel fuel);
 }
