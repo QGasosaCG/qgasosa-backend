@@ -21,7 +21,7 @@ public interface GasStationService {
 
     GasStation createGasStation(GasStationDTO gasStationDTO);
 
-    GasStation updateGasStation(Long id, GasStationDTO gasStationDTO);
+    void updateGasStation(Long id, GasStationDTO gasStationDTO);
 
     void saveGasStation(GasStation gasStation);
 

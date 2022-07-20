@@ -369,3 +369,6 @@ VALUES (nextval('gas_station_fuel_id_seq'), 13, 6, 0);
 
 INSERT INTO gas_station_fuel (id, gas_station_id, fuel_id, price)
 VALUES (nextval('gas_station_fuel_id_seq'), 13, 7, 0);
+
+INSERT INTO admin (id, username, password)
+VALUES (nextval('admin_id_seq'), 'admin', '$2y$10$44Wql2KK4WPgO.tFGxnSbuTqjpGkPgbzt2fEgdPR/Y0G55B06Sj3K');
