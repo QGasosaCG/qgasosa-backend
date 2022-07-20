@@ -22,7 +22,7 @@ public class AdminApiController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/invoice", method = RequestMethod.PUT)
+    @PutMapping(value = "/invoice/{id}")
     public ResponseEntity<Void> validateInvoice(@PathVariable("id") Long gasStationId, @RequestBody GasStationFuelDTO gasStationFuelDTO) {
         this.adminService.validateInvoice(gasStationId, gasStationFuelDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
