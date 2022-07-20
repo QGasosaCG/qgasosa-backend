@@ -2,6 +2,7 @@ package com.qgasosa.backend.maps;
 
 import com.qgasosa.backend.maps.response.MapsMetricResponse;
 import com.qgasosa.backend.model.GasStation;
+import com.qgasosa.backend.model.GasStationFuel;
 
 import java.io.IOException;
 

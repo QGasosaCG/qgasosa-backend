@@ -1,6 +1,7 @@
 package com.qgasosa.backend.service.gas_station;
 
 import com.qgasosa.backend.controller.response.GasStationCheapestPriceResponse;
+import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.exception.gas_station.GasStationAlreadyExistsException;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
@@ -32,6 +33,9 @@ public class GasStationServiceImpl implements GasStationService {
     private GasStationRepository gasStationRepository;
 
     @Autowired
+    private GasStationFuelService gasStationFuelService;
+
+    @Autowired
     private MapsClient mapsClient;
 
     @Override
@@ -50,7 +54,8 @@ public class GasStationServiceImpl implements GasStationService {
     }
 
     @Override
-    public GasStation addGasStation(GasStationDTO gasStationDTO) {
+    @Transactional
+    public GasStation createGasStation(GasStationDTO gasStationDTO) {
         Optional<GasStation> gasStationOp = this.gasStationRepository.findByName(gasStationDTO.name());
 
         if(gasStationOp.isPresent()){
@@ -65,6 +70,7 @@ public class GasStationServiceImpl implements GasStationService {
     }
 
     @Override
+    @Transactional
     public GasStation updateGasStation(Long id, GasStationDTO gasStationDTO) {
         GasStation gasStation = this.findGasStationById(id);
 
@@ -122,5 +128,27 @@ public class GasStationServiceImpl implements GasStationService {
         Collections.sort(gasStationCheapestPriceResponses);
 
         return gasStationCheapestPriceResponses;
+    }
+
+    @Override
+    public List<BestGasStationResponse> findBestGasStations(String originLatitude, String originLongitude, Double consumption) throws IOException {
+        List<GasStationFuel> gasStationFuels = this.gasStationFuelService.findAllGasStations();
+        List<BestGasStationResponse> bestGasStations = new ArrayList<>();
+
+        for (GasStationFuel gasStationFuel : gasStationFuels) {
+            Double fuelPrice = gasStationFuel.getPrice();
+            if (!fuelPrice.equals(0.0)) {
+                MapsMetricResponse distance =  mapsClient.getDistance(originLatitude, originLongitude, gasStationFuel.getGasStation());
+                Double cost = this.calculateCost(distance, consumption, gasStationFuel.getPrice());
+                bestGasStations.add(new BestGasStationResponse(gasStationFuel, distance, cost));
+            }
+        }
+
+        Collections.sort(bestGasStations);
+        return bestGasStations;
+    }
+
+    private Double calculateCost(MapsMetricResponse distance, Double consumption, Double price) {
+        return ((distance.getValue() / 1000) / consumption) * price;
     }
 }
