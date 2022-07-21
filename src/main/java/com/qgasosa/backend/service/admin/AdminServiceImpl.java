@@ -27,4 +27,9 @@ public class AdminServiceImpl implements AdminService{
         this.gasStationFuelService.updateGasStationFuelPrice(gasStationId, gasStationFuelDTO);
     }
 
+    @Override
+    public void validateInvoice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
+        this.gasStationFuelService.updateGasStationFuelPrice(gasStationId, gasStationFuelDTO);
+    }
+
 }
