@@ -15,4 +15,6 @@ public interface GasStationFuelService {
     void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO);
 
     List<GasStationFuel> findAllGasStations();
+
+    List<GasStationFuel> findAllGasStationsByFuelName(String fuelName);
 }

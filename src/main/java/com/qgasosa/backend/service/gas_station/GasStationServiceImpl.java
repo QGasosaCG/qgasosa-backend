@@ -1,5 +1,6 @@
 package com.qgasosa.backend.service.gas_station;
 
+import com.qgasosa.backend.controller.response.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.exception.gas_station.GasStationAlreadyExistsException;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GasStationServiceImpl implements GasStationService {
@@ -69,19 +71,18 @@ public class GasStationServiceImpl implements GasStationService {
 
     @Override
     @Transactional
-    public GasStation updateGasStation(Long id, GasStationDTO gasStationDTO) {
+    public void updateGasStation(Long id, GasStationDTO gasStationDTO) {
         GasStation gasStation = this.findGasStationById(id);
 
-        if(gasStation == null) {
-            throw new GasStationNotFoundException(gasStationDTO.name());
+        if (gasStationDTO.address() != null) {
+            gasStation.setAddress(gasStationDTO.address());
         }
 
-        gasStation.setAddress(gasStationDTO.address());
-        gasStation.setName(gasStationDTO.name());
+        if (gasStationDTO.name() != null) {
+            gasStation.setName(gasStationDTO.name());
+        }
 
-        this.saveGasStation(gasStation);
-
-        return gasStation;
+        this.gasStationRepository.save(gasStation);
     }
 
     @Override
@@ -95,7 +96,7 @@ public class GasStationServiceImpl implements GasStationService {
         List<GasStation> gasStations = this.findAllGasStations();
         List<GasStationDistanceResponse> closestGasStations = new ArrayList<>();
 
-        for (GasStation gasStation: gasStations) {
+        for (GasStation gasStation : gasStations) {
             MapsMetricResponse distance = mapsClient.getDistance(originLatitude, originLongitude, gasStation);
             closestGasStations.add(new GasStationDistanceResponse(gasStation, distance));
         }
@@ -103,6 +104,20 @@ public class GasStationServiceImpl implements GasStationService {
         Collections.sort(closestGasStations);
 
         return closestGasStations;
+    }
+
+    @Override
+    public List<CheapestGasStationResponse> findCheapestGasStation(String fuelName) {
+        List<GasStationFuel> gasStationFuels = this.gasStationFuelService.findAllGasStationsByFuelName(fuelName);
+        List<CheapestGasStationResponse> cheapestGasStationResponses = gasStationFuels
+                .stream()
+                .filter(gasStationFuel -> gasStationFuel.getPrice() > 0.0)
+                .map(gasStationFuel -> new CheapestGasStationResponse(gasStationFuel))
+                .collect(Collectors.toList());
+
+        Collections.sort(cheapestGasStationResponses, Comparator.comparing(CheapestGasStationResponse::getPrice));
+
+        return cheapestGasStationResponses;
     }
 
     @Override

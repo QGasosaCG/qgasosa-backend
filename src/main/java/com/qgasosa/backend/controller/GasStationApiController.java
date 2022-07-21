@@ -1,5 +1,6 @@
 package com.qgasosa.backend.controller;
 
+import com.qgasosa.backend.controller.response.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -35,6 +37,8 @@ public class GasStationApiController {
         return new ResponseEntity<>(closestGasStations, HttpStatus.OK);
     }
 
+    @Secured({ Constants.ADMIN_ROLE })
+    @PostMapping
     @GetMapping(value = "/cost-benefit")
     public ResponseEntity<List<BestGasStationResponse>> getBestGasStations(
             @RequestParam("latitude") String originLatitude,
@@ -54,16 +58,25 @@ public class GasStationApiController {
         return new ResponseEntity<>(gasStation, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/")
+    @Secured({ Constants.ADMIN_ROLE })
+    @GetMapping
     public ResponseEntity<List<GasStation>> findAllGasStation() {
         List<GasStation> gasStations = gasStationService.findAllGasStations();
 
         return new ResponseEntity<>(gasStations, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> updateGasStation(@RequestParam Long gasStationId, @RequestBody GasStationDTO gasStationDTO) {
+    @Secured({ Constants.ADMIN_ROLE })
+    @PutMapping("/{gasStationId}")
+    public ResponseEntity<Void> updateGasStation(@PathVariable Long gasStationId, @RequestBody GasStationDTO gasStationDTO) {
         gasStationService.updateGasStation(gasStationId, gasStationDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/cheapest")
+    public ResponseEntity<List<CheapestGasStationResponse>> getCheapestGasStations(
+            @RequestParam("fuelName") String fuelName) {
+        List<CheapestGasStationResponse> cheapestGasStations = this.gasStationService.findCheapestGasStation(fuelName);
+        return new ResponseEntity<>(cheapestGasStations, HttpStatus.OK);
     }
 }

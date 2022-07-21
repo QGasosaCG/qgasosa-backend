@@ -89,4 +89,10 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
         return this.gasStationFuelRepository.findAll();
     }
 
+    @Override
+    public List<GasStationFuel> findAllGasStationsByFuelName(String fuelName) {
+        Fuel fuel = this.fuelService.findFuelByName(fuelName);
+        return this.gasStationFuelRepository.findByFuel(fuel);
+    }
+
 }
