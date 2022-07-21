@@ -1,12 +1,10 @@
 package com.qgasosa.backend.controller;
 
-import com.qgasosa.backend.controller.response.GasStationCheapestPriceResponse;
+import com.qgasosa.backend.controller.response.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
-import com.qgasosa.backend.model.Fuel;
-import com.qgasosa.backend.service.fuel.FuelService;
 import com.qgasosa.backend.service.gas_station.GasStationService;
 import com.qgasosa.backend.util.Constants;
 import org.apache.logging.log4j.LogManager;
@@ -28,9 +26,6 @@ public class GasStationApiController {
 
     @Autowired
     private GasStationService gasStationService;
-
-    @Autowired
-    private FuelService fuelService;
 
     @GetMapping(value = "/closest")
     public ResponseEntity<List<GasStationDistanceResponse>> getClosestGasStations(
@@ -79,10 +74,9 @@ public class GasStationApiController {
     }
 
     @GetMapping(value = "/cheapest")
-    public ResponseEntity<List<GasStationCheapestPriceResponse>> getCheapestGasStations(
+    public ResponseEntity<List<CheapestGasStationResponse>> getCheapestGasStations(
             @RequestParam("fuelName") String fuelName) {
-        Fuel fuel = this.fuelService.findFuelByName(fuelName);
-        List<GasStationCheapestPriceResponse> cheapestGasStations = this.gasStationService.findCheapestGasStation(fuel);
+        List<CheapestGasStationResponse> cheapestGasStations = this.gasStationService.findCheapestGasStation(fuelName);
         return new ResponseEntity<>(cheapestGasStations, HttpStatus.OK);
     }
 }

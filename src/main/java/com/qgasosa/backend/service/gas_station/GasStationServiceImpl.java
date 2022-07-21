@@ -1,6 +1,6 @@
 package com.qgasosa.backend.service.gas_station;
 
-import com.qgasosa.backend.controller.response.GasStationCheapestPriceResponse;
+import com.qgasosa.backend.controller.response.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.exception.gas_station.GasStationAlreadyExistsException;
@@ -8,7 +8,6 @@ import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
 import com.qgasosa.backend.maps.MapsClient;
 import com.qgasosa.backend.maps.response.MapsMetricResponse;
-import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.model.GasStationFuel;
 import com.qgasosa.backend.repository.GasStationRepository;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GasStationServiceImpl implements GasStationService {
@@ -107,26 +107,17 @@ public class GasStationServiceImpl implements GasStationService {
     }
 
     @Override
-    public List<GasStationCheapestPriceResponse> findCheapestGasStation(Fuel fuel) {
-        List<GasStation> gasStations = this.gasStationRepository.findAll();
-        List<GasStationCheapestPriceResponse> gasStationCheapestPriceResponses = new ArrayList<>();
+    public List<CheapestGasStationResponse> findCheapestGasStation(String fuelName) {
+        List<GasStationFuel> gasStationFuels = this.gasStationFuelService.findAllGasStationsByFuelName(fuelName);
+        List<CheapestGasStationResponse> cheapestGasStationResponses = gasStationFuels
+                .stream()
+                .filter(gasStationFuel -> gasStationFuel.getPrice() > 0.0)
+                .map(gasStationFuel -> new CheapestGasStationResponse(gasStationFuel))
+                .collect(Collectors.toList());
 
-        for (GasStation gasStation : gasStations) {
-            Double price = 0.0;
-            for (GasStationFuel gas: gasStation.getFuels()) {
-                if (gas.getFuelName().equals(fuel.getName())) {
-                    price = gas.getPrice();
-                }
+        Collections.sort(cheapestGasStationResponses, Comparator.comparing(CheapestGasStationResponse::getPrice));
 
-            }
-            if (price > 0) {
-                gasStationCheapestPriceResponses.add(new GasStationCheapestPriceResponse(gasStation, price));
-            }
-        }
-
-        Collections.sort(gasStationCheapestPriceResponses);
-
-        return gasStationCheapestPriceResponses;
+        return cheapestGasStationResponses;
     }
 
     @Override

@@ -1,13 +1,11 @@
 package com.qgasosa.backend.service.gas_station;
 
-import com.qgasosa.backend.controller.response.GasStationCheapestPriceResponse;
+import com.qgasosa.backend.controller.response.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
-import com.qgasosa.backend.model.Fuel;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
 
-import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,5 +27,5 @@ public interface GasStationService {
 
     List<BestGasStationResponse> findBestGasStations(String originLatitude, String originLongitude, Double consumption) throws IOException;
 
-    List<GasStationCheapestPriceResponse> findCheapestGasStation(Fuel fuel);
+    List<CheapestGasStationResponse> findCheapestGasStation(String fuelName);
 }
