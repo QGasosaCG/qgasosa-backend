@@ -14,4 +14,6 @@ public interface GasStationFuelRepository extends JpaRepository<GasStationFuel, 
     List<GasStationFuel> findByGasStation(GasStation gasStation);
 
     List<GasStationFuel> findByFuel(Fuel fuel);
+
+    Optional<GasStationFuel> findByGasStationAndFuel(GasStation gasStation, Fuel fuel);
 }

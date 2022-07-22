@@ -41,9 +41,6 @@ public class SecurityConfig {
         http.cors().and().csrf().disable();
 
         return http
-                .formLogin()
-                .loginProcessingUrl(Constants.API_BASE_URL + "/login")
-                .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(Constants.API_BASE_URL + "/admin/**").authenticated()
                         .anyRequest().permitAll())

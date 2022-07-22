@@ -45,6 +45,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException {
 		String username = ((AdminPrincipal) auth.getPrincipal()).getUsername();
+		logger.info(String.format("Admin '%s' successfully authenticated", username));
+
 		String token = jwtUtil.generateToken(username);
 		AuthenticationResponse authenticationResponse = new AuthenticationResponse(username, token);
 

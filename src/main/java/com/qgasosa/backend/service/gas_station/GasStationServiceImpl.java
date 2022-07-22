@@ -1,15 +1,17 @@
 package com.qgasosa.backend.service.gas_station;
 
-import com.qgasosa.backend.controller.response.CheapestGasStationResponse;
+import com.qgasosa.backend.controller.response.gas_station.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.exception.gas_station.GasStationAlreadyExistsException;
-import com.qgasosa.backend.controller.response.GasStationDistanceResponse;
+import com.qgasosa.backend.controller.response.gas_station.ClosestGasStationResponse;
 import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
 import com.qgasosa.backend.maps.MapsClient;
 import com.qgasosa.backend.maps.response.MapsMetricResponse;
+import com.qgasosa.backend.model.Address;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.model.GasStationFuel;
+import com.qgasosa.backend.repository.AddressRepository;
 import com.qgasosa.backend.repository.GasStationRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,6 +33,9 @@ public class GasStationServiceImpl implements GasStationService {
 
     @Autowired
     private GasStationRepository gasStationRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
     private GasStationFuelService gasStationFuelService;
@@ -56,17 +61,25 @@ public class GasStationServiceImpl implements GasStationService {
     @Override
     @Transactional
     public GasStation createGasStation(GasStationDTO gasStationDTO) {
-        Optional<GasStation> gasStationOp = this.gasStationRepository.findByName(gasStationDTO.name());
+        boolean existsGasStation = this.gasStationRepository.findByName(gasStationDTO.name()).isPresent();
 
-        if(gasStationOp.isPresent()){
+        if (existsGasStation){
             throw new GasStationAlreadyExistsException(gasStationDTO.name());
         }
 
         GasStation gasStation = new GasStation(gasStationDTO.name(), gasStationDTO.address());
+        return this.saveGasStation(gasStation);
+    }
 
-        this.saveGasStation(gasStation);
+    @Override
+    @Transactional
+    public GasStation createGasStation(String gasStationName, String gasStationStreet) {
+        Address address = new Address();
+        address.setName(gasStationStreet);
+        this.addressRepository.save(address);
 
-        return gasStation;
+        GasStation gasStation = new GasStation(gasStationName, address);
+        return this.saveGasStation(gasStation);
     }
 
     @Override
@@ -87,18 +100,18 @@ public class GasStationServiceImpl implements GasStationService {
 
     @Override
     @Transactional
-    public void saveGasStation(GasStation gasStation) {
-        this.gasStationRepository.save(gasStation);
+    public GasStation saveGasStation(GasStation gasStation) {
+        return this.gasStationRepository.save(gasStation);
     }
 
     @Override
-    public List<GasStationDistanceResponse> findClosestGasStations(String originLatitude, String originLongitude) throws IOException {
+    public List<ClosestGasStationResponse> findClosestGasStations(String originLatitude, String originLongitude) throws IOException {
         List<GasStation> gasStations = this.findAllGasStations();
-        List<GasStationDistanceResponse> closestGasStations = new ArrayList<>();
+        List<ClosestGasStationResponse> closestGasStations = new ArrayList<>();
 
         for (GasStation gasStation : gasStations) {
             MapsMetricResponse distance = mapsClient.getDistance(originLatitude, originLongitude, gasStation);
-            closestGasStations.add(new GasStationDistanceResponse(gasStation, distance));
+            closestGasStations.add(new ClosestGasStationResponse(gasStation, distance));
         }
 
         Collections.sort(closestGasStations);
