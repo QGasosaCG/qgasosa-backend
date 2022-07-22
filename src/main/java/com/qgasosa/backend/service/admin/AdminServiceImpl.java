@@ -1,35 +1,56 @@
 package com.qgasosa.backend.service.admin;
 
+import com.qgasosa.backend.dto.BatchGasStationFuelDTO;
+import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.dto.GasStationFuelDTO;
-import com.qgasosa.backend.model.Admin;
-import com.qgasosa.backend.repository.AdminRepository;
+import com.qgasosa.backend.dto.XlsDTO;
+import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.service.gas_station.GasStationFuelService;
+import com.qgasosa.backend.service.gas_station.GasStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
-public class AdminServiceImpl implements AdminService{
+import javax.transaction.Transactional;
 
-    @Autowired
-    private AdminRepository adminRepository;
+@Service
+public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private GasStationFuelService gasStationFuelService;
 
-    @Override
-    public Admin findAdminByUsername(String username) { return this.adminRepository.findByUsername(username).orElse(null); }
+    @Autowired
+    private GasStationService gasStationService;
 
     @Override
-    public Admin findAdminById(Long id) { return this.adminRepository.findById(id).orElse(null); }
+    @Transactional
+    public GasStation createGasStation(GasStationDTO gasStationDTO) {
+        return this.gasStationService.createGasStation(gasStationDTO);
+    }
 
     @Override
-    public void updateGasStationPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
+    @Transactional
+    public void updateGasStationFuelPrice(Long gasStationId, BatchGasStationFuelDTO gasStationFuelDTO) {
+        gasStationFuelDTO
+                .payload()
+                .forEach(gasStationFuel -> this.gasStationFuelService.updateGasStationFuelPrice(gasStationId, gasStationFuel));
+    }
+
+    @Override
+    @Transactional
+    public void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
         this.gasStationFuelService.updateGasStationFuelPrice(gasStationId, gasStationFuelDTO);
     }
 
     @Override
-    public void validateInvoice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
-        this.gasStationFuelService.updateGasStationFuelPrice(gasStationId, gasStationFuelDTO);
+    @Transactional
+    public void updateGasStation(Long gasStationId, GasStationDTO gasStationDTO) {
+        this.gasStationService.updateGasStation(gasStationId, gasStationDTO);
+    }
+
+    @Override
+    @Transactional
+    public void updateGasStationFuelByXLS(XlsDTO xlsDTO) {
+        this.gasStationFuelService.updateGasStationFuelByXLS(xlsDTO);
     }
 
 }

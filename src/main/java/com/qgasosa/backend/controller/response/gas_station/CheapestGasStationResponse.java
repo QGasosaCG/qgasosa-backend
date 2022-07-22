@@ -1,11 +1,10 @@
-package com.qgasosa.backend.controller.response;
+package com.qgasosa.backend.controller.response.gas_station;
 
 import com.qgasosa.backend.dto.FuelDTO;
 import com.qgasosa.backend.dto.GasStationDTO;
-import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.model.GasStationFuel;
 
-public class CheapestGasStationResponse {
+public class CheapestGasStationResponse implements Comparable<CheapestGasStationResponse> {
 
     private GasStationDTO gasStation;
 
@@ -34,4 +33,8 @@ public class CheapestGasStationResponse {
         return price;
     }
 
+    @Override
+    public int compareTo(CheapestGasStationResponse cheapestGasStationResponse) {
+        return this.price.compareTo(cheapestGasStationResponse.getPrice());
+    }
 }

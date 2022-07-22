@@ -1,5 +1,6 @@
 package com.qgasosa.backend.security;
 
+import com.qgasosa.backend.exception.admin.AdminNotFoundException;
 import com.qgasosa.backend.model.Admin;
 import com.qgasosa.backend.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin user = this.adminRepository.findByUsername(username).orElse(null);
+        Admin user = this.adminRepository.findByUsername(username).orElseThrow(() -> new AdminNotFoundException(username));
         return new AdminPrincipal(user);
     }
 }

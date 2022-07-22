@@ -4,6 +4,7 @@ package com.qgasosa.backend.service.gas_station;
 import com.qgasosa.backend.dto.GasStationFuelDTO;
 import com.qgasosa.backend.dto.XlsDTO;
 import com.qgasosa.backend.dto.XlsUnitDTO;
+import com.qgasosa.backend.exception.common.NotFoundException;
 import com.qgasosa.backend.exception.fuel.FuelNotFoundException;
 import com.qgasosa.backend.exception.gas_station.GasStationNotFoundException;
 import com.qgasosa.backend.model.Fuel;
@@ -46,18 +47,15 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     }
 
     private GasStationFuel updateGasStationFuel(Double price, GasStation gasStation, Fuel fuel) {
-        Collection<GasStationFuel> gasStationFuels = this.gasStationFuelRepository.findByGasStation(gasStation);
-
-        GasStationFuel updatedGasStation = null;
-        for (GasStationFuel gasStationFuel : gasStationFuels) {
-            if (gasStationFuel.getFuel().equals(fuel)) {
-                gasStationFuel.setPrice(price);
-                updatedGasStation = gasStationFuel;
-                break;
-            }
+        GasStationFuel gasStationFuel = this.gasStationFuelRepository.findByGasStationAndFuel(gasStation, fuel).orElse(null);
+        if (gasStationFuel == null) {
+            gasStationFuel = new GasStationFuel(gasStation, fuel, price);
+        } else {
+            gasStationFuel.setPrice(price);
         }
 
-        return updatedGasStation;
+        gasStationFuel.setUpdatedAt(new Date());
+        return this.gasStationFuelRepository.save(gasStationFuel);
     }
 
     @Override
@@ -67,11 +65,30 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
             try {
                 this.updateGasStationFuel(xlsUnitDTO);
                 logger.info(String.format("Updated gas station %s fuel %s price to %.4f", xlsUnitDTO.gasStationName(), xlsUnitDTO.fuelName(), xlsUnitDTO.newPrice()));
-            } catch (GasStationNotFoundException | FuelNotFoundException e) {
+            } catch (NotFoundException e) {
                 logger.error(e.getMessage());
-                continue;
+                if (e instanceof FuelNotFoundException) {
+                    this.createFuelAndRetry(xlsUnitDTO);
+                } else if (e instanceof GasStationNotFoundException) {
+                    this.createGasStationAndRetry(xlsUnitDTO);
+                }
             }
         }
+    }
+
+    private void createGasStationAndRetry(XlsUnitDTO xlsUnitDTO) {
+        logger.info(String.format("Creating Gas Station '%s' - '%s' and retrying", xlsUnitDTO.gasStationName(), xlsUnitDTO.gasStationStreet()));
+
+        this.gasStationService.createGasStation(xlsUnitDTO.gasStationName(), xlsUnitDTO.gasStationStreet());
+        this.updateGasStationFuel(xlsUnitDTO);
+    }
+
+    private void createFuelAndRetry(XlsUnitDTO xlsUnitDTO) {
+        logger.info(String.format("Creating Fuel '%s' and retrying", xlsUnitDTO.fuelName()));
+
+        Fuel fuel = new Fuel(xlsUnitDTO.fuelName());
+        this.fuelService.saveFuel(fuel);
+        this.updateGasStationFuel(xlsUnitDTO);
     }
 
     @Override

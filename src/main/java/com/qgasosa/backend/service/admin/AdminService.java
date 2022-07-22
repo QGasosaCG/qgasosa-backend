@@ -1,16 +1,19 @@
 package com.qgasosa.backend.service.admin;
 
+import com.qgasosa.backend.dto.BatchGasStationFuelDTO;
+import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.dto.GasStationFuelDTO;
-import com.qgasosa.backend.model.Admin;
-import com.qgasosa.backend.model.GasStationFuel;
+import com.qgasosa.backend.dto.XlsDTO;
+import com.qgasosa.backend.model.GasStation;
 
 public interface AdminService {
 
-    Admin findAdminByUsername(String username);
+    GasStation createGasStation(GasStationDTO gasStationDTO);
+    void updateGasStationFuelPrice(Long gasStationId, BatchGasStationFuelDTO gasStationFuelDTO);
 
-    Admin findAdminById(Long id);
+    void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO);
 
-    void updateGasStationPrice(Long gasStationId,GasStationFuelDTO gasStationFuelDTO);
+    void updateGasStation(Long gasStationId, GasStationDTO gasStationDTO);
 
-    void validateInvoice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO);
+    void updateGasStationFuelByXLS(XlsDTO xlsDTO);
 }
