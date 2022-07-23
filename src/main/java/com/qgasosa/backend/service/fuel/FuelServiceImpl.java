@@ -29,4 +29,10 @@ public class FuelServiceImpl implements FuelService {
     public void saveFuel(Fuel fuel) {
         this.fuelRepository.save(fuel);
     }
+
+    @Override
+    @Transactional
+    public Fuel createFuel(String fuelName) {
+        return this.fuelRepository.save(new Fuel(fuelName));
+    }
 }

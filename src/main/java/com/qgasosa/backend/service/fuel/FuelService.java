@@ -10,4 +10,6 @@ public interface FuelService {
 
     void saveFuel(Fuel fuel);
 
+    Fuel createFuel(String fuelName);
+
 }

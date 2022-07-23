@@ -86,15 +86,13 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     private void createFuelAndRetry(XlsUnitDTO xlsUnitDTO) {
         logger.info(String.format("Creating Fuel '%s' and retrying", xlsUnitDTO.fuelName()));
 
-        Fuel fuel = new Fuel(xlsUnitDTO.fuelName());
-        this.fuelService.saveFuel(fuel);
+        this.fuelService.createFuel(xlsUnitDTO.fuelName());
         this.updateGasStationFuel(xlsUnitDTO);
     }
 
     @Override
     public void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
         GasStation gasStation = this.gasStationService.findGasStationById(gasStationId);
-
         Fuel fuel = this.fuelService.findFuelById(gasStationFuelDTO.fuelId());
 
         GasStationFuel gasStationFuel = updateGasStationFuel(gasStationFuelDTO.price(), gasStation, fuel);
