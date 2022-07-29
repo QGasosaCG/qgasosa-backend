@@ -9,6 +9,7 @@ import com.qgasosa.backend.model.GasStation;
 public interface AdminService {
 
     GasStation createGasStation(GasStationDTO gasStationDTO);
+
     void updateGasStationFuelPrice(Long gasStationId, BatchGasStationFuelDTO gasStationFuelDTO);
 
     void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO);
