@@ -16,8 +16,8 @@ function install_docker() {
 function create_db_container() {
   docker run --name $DB_NAME \
              -dp 5433:5432 \
-             -e POSTGRES_USER=postgres \
-             -e POSTGRES_PASSWORD=postgres \
+             -e POSTGRES_USER=qgasosa \
+             -e POSTGRES_PASSWORD=O1zRU6wLThIRNFMqRC3q9mLt4KxFFjwK \
              -v qgasosa-data:/var/lib/postgresql/data \
               postgres:14.4
 }

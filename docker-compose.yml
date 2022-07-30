@@ -1,0 +1,23 @@
+version: '3'
+services:
+  app:
+    image: jonatasflima/qgasosa-backend:develop
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    env_file:
+      - .env.app
+      - .env.db
+
+  db:
+    image: postgres:14.4
+    volumes:
+      - app-data:/var/lib/postgresql/data
+    env_file:
+      - .env.db
+    ports:
+      - 5434:5432
+
+volumes:
+  app-data:

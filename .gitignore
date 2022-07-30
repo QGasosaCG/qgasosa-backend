@@ -57,3 +57,5 @@ build/
 .vscode/
 
 application-prod.properties
+
+.env*
