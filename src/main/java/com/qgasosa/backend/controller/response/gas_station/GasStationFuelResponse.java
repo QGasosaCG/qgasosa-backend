@@ -26,6 +26,7 @@ public class GasStationFuelResponse {
         return gasStation
                 .getFuels()
                 .stream()
+                .filter(gasStationFuel -> gasStationFuel.getPrice() > 0.0)
                 .map(gasStationFuel -> new FuelPriceDTO(gasStationFuel.getFuelName(), gasStationFuel.getPrice()))
                 .collect(Collectors.toList());
     }
