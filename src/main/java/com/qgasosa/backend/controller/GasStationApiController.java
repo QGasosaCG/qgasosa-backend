@@ -1,9 +1,9 @@
 package com.qgasosa.backend.controller;
 
 import com.qgasosa.backend.controller.response.gas_station.CheapestGasStationResponse;
+import com.qgasosa.backend.controller.response.gas_station.GasStationFuelResponse;
 import com.qgasosa.backend.controller.response.gas_station.ClosestGasStationResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
-import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.service.gas_station.GasStationService;
 import com.qgasosa.backend.util.Constants;
@@ -50,16 +50,11 @@ public class GasStationApiController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GasStationDTO>> findAllGasStation() {
+    public ResponseEntity<List<GasStationFuelResponse>> findAllGasStation() {
         this.logger.info("Requesting all gas stations.");
 
-        List<GasStation> gasStations = gasStationService.findAllGasStations();
-        List<GasStationDTO> gasStationDTOs = gasStations
-                .stream()
-                .map(gasStation -> new GasStationDTO(gasStation.getName(), gasStation.getAddress()))
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>(gasStationDTOs, HttpStatus.OK);
+        List<GasStationFuelResponse> gasStations = this.gasStationService.findAllGasStationFuels();
+        return new ResponseEntity<>(gasStations, HttpStatus.OK);
     }
 
     @GetMapping("/cheapest")

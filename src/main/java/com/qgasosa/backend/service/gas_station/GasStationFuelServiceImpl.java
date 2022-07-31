@@ -1,7 +1,7 @@
 package com.qgasosa.backend.service.gas_station;
 
 
-import com.qgasosa.backend.dto.GasStationFuelDTO;
+import com.qgasosa.backend.dto.UpdateGasStationFuelDTO;
 import com.qgasosa.backend.dto.XlsDTO;
 import com.qgasosa.backend.dto.XlsUnitDTO;
 import com.qgasosa.backend.exception.common.NotFoundException;
@@ -92,7 +92,7 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     }
 
     @Override
-    public void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
+    public void updateGasStationFuelPrice(Long gasStationId, UpdateGasStationFuelDTO gasStationFuelDTO) {
         GasStation gasStation = this.gasStationService.findGasStationById(gasStationId);
 
         Fuel fuel = this.fuelService.findFuelById(gasStationFuelDTO.fuelId());

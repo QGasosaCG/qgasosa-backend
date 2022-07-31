@@ -1,7 +1,8 @@
 package com.qgasosa.backend.service.gas_station;
 
-import com.qgasosa.backend.controller.response.gas_station.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
+import com.qgasosa.backend.controller.response.gas_station.CheapestGasStationResponse;
+import com.qgasosa.backend.controller.response.gas_station.GasStationFuelResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.exception.gas_station.GasStationAlreadyExistsException;
 import com.qgasosa.backend.controller.response.gas_station.ClosestGasStationResponse;
@@ -49,6 +50,17 @@ public class GasStationServiceImpl implements GasStationService {
     }
 
     @Override
+    public List<GasStationFuelResponse> findAllGasStationFuels() {
+        List<GasStation> gasStations = this.findAllGasStations();
+        List<GasStationFuelResponse> gasStationsResponse = gasStations
+                .stream()
+                .map(GasStationFuelResponse::new)
+                .collect(Collectors.toList());
+
+        return gasStationsResponse;
+    }
+
+    @Override
     public GasStation findGasStationByName(String name) {
         return this.gasStationRepository.findByName(name).orElseThrow(() -> new GasStationNotFoundException(name));
     }
@@ -67,7 +79,10 @@ public class GasStationServiceImpl implements GasStationService {
             throw new GasStationAlreadyExistsException(gasStationDTO.name());
         }
 
-        GasStation gasStation = new GasStation(gasStationDTO.name(), gasStationDTO.address());
+        Address address = new Address(gasStationDTO.address().street(), gasStationDTO.address().latitude(), gasStationDTO.address().longitude());
+        this.addressRepository.save(address);
+
+        GasStation gasStation = new GasStation(gasStationDTO.name(), address);
         return this.saveGasStation(gasStation);
     }
 
@@ -91,7 +106,20 @@ public class GasStationServiceImpl implements GasStationService {
         GasStation gasStation = this.findGasStationById(id);
 
         if (gasStationDTO.address() != null) {
-            gasStation.setAddress(gasStationDTO.address());
+            String street = gasStationDTO.address().street();
+            if (street != null) {
+                gasStation.getAddress().setName(street);
+            }
+
+            String latitude = gasStationDTO.address().latitude();
+            if (latitude != null) {
+                gasStation.getAddress().setLatitude(latitude);
+            }
+
+            String longitude = gasStationDTO.address().longitude();
+            if (longitude != null) {
+                gasStation.getAddress().setLongitude(longitude);
+            }
         }
 
         if (gasStationDTO.name() != null) {
@@ -128,10 +156,8 @@ public class GasStationServiceImpl implements GasStationService {
         List<CheapestGasStationResponse> cheapestGasStationResponses = gasStationFuels
                 .stream()
                 .filter(gasStationFuel -> gasStationFuel.getPrice() > 0.0)
-                .map(gasStationFuel -> new CheapestGasStationResponse(gasStationFuel))
-                .collect(Collectors.toList());
-
-        Collections.sort(cheapestGasStationResponses, Comparator.comparing(CheapestGasStationResponse::getPrice));
+                .map(CheapestGasStationResponse::new)
+                .sorted(Comparator.comparing(c -> c.getFuel().price())).collect(Collectors.toList());
 
         return cheapestGasStationResponses;
     }

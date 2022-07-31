@@ -2,7 +2,7 @@ package com.qgasosa.backend.service.admin;
 
 import com.qgasosa.backend.dto.BatchGasStationFuelDTO;
 import com.qgasosa.backend.dto.GasStationDTO;
-import com.qgasosa.backend.dto.GasStationFuelDTO;
+import com.qgasosa.backend.dto.UpdateGasStationFuelDTO;
 import com.qgasosa.backend.dto.XlsDTO;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.service.gas_station.GasStationFuelService;
@@ -37,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void updateGasStationFuelPrice(Long gasStationId, GasStationFuelDTO gasStationFuelDTO) {
+    public void updateGasStationFuelPrice(Long gasStationId, UpdateGasStationFuelDTO gasStationFuelDTO) {
         this.gasStationFuelService.updateGasStationFuelPrice(gasStationId, gasStationFuelDTO);
     }
 

@@ -3,7 +3,7 @@ package com.qgasosa.backend.controller;
 
 import com.qgasosa.backend.dto.BatchGasStationFuelDTO;
 import com.qgasosa.backend.dto.GasStationDTO;
-import com.qgasosa.backend.dto.GasStationFuelDTO;
+import com.qgasosa.backend.dto.UpdateGasStationFuelDTO;
 import com.qgasosa.backend.dto.XlsDTO;
 import com.qgasosa.backend.model.GasStation;
 import com.qgasosa.backend.service.admin.AdminService;
@@ -56,7 +56,7 @@ public class AdminApiController {
     }
 
     @PutMapping(value = "/invoice/{id}")
-    public ResponseEntity<Void> validateInvoice(@PathVariable("id") Long gasStationId, @RequestBody GasStationFuelDTO gasStationFuelDTO) {
+    public ResponseEntity<Void> validateInvoice(@PathVariable("id") Long gasStationId, @RequestBody UpdateGasStationFuelDTO gasStationFuelDTO) {
         this.adminService.updateGasStationFuelPrice(gasStationId, gasStationFuelDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

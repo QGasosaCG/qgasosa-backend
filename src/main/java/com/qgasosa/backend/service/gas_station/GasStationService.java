@@ -3,6 +3,7 @@ package com.qgasosa.backend.service.gas_station;
 import com.qgasosa.backend.controller.response.gas_station.CheapestGasStationResponse;
 import com.qgasosa.backend.controller.response.gas_station.ClosestGasStationResponse;
 import com.qgasosa.backend.controller.response.BestGasStationResponse;
+import com.qgasosa.backend.controller.response.gas_station.GasStationFuelResponse;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.model.GasStation;
 
@@ -12,6 +13,8 @@ import java.util.List;
 public interface GasStationService {
 
     List<GasStation> findAllGasStations();
+
+    List<GasStationFuelResponse> findAllGasStationFuels();
 
     GasStation findGasStationByName(String name);
 

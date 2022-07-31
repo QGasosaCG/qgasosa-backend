@@ -1,5 +1,6 @@
 package com.qgasosa.backend.controller.response.gas_station;
 
+import com.qgasosa.backend.dto.AddressDTO;
 import com.qgasosa.backend.dto.GasStationDTO;
 import com.qgasosa.backend.maps.response.MapsMetricResponse;
 import com.qgasosa.backend.model.GasStation;
@@ -12,7 +13,8 @@ public class ClosestGasStationResponse implements Comparable<ClosestGasStationRe
     }
 
     public ClosestGasStationResponse(GasStation gasStation, MapsMetricResponse distance) {
-        this.gasStation = new GasStationDTO(gasStation.getName(), gasStation.getAddress());
+        AddressDTO addressDTO = new AddressDTO(gasStation.getAddress().getName(), gasStation.getAddress().getLatitude(), gasStation.getAddress().getLatitude());
+        this.gasStation = new GasStationDTO(gasStation.getName(), addressDTO);
         this.distance = distance;
     }
 
