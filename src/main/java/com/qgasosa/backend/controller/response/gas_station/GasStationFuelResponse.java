@@ -17,7 +17,7 @@ public class GasStationFuelResponse {
     public GasStationFuelResponse() {}
 
     public GasStationFuelResponse(GasStation gasStation) {
-        AddressDTO addressDTO = new AddressDTO(gasStation.getAddress().getName(), gasStation.getAddress().getLatitude(), gasStation.getAddress().getLatitude());
+        AddressDTO addressDTO = new AddressDTO(gasStation.getAddress().getName(), gasStation.getAddress().getLatitude(), gasStation.getAddress().getLongitude());
         this.gasStation = new GasStationDTO(gasStation.getName(), addressDTO);
         this.fuels = this.parseFuelPrices(gasStation);
     }
