@@ -64,7 +64,7 @@ public class Address implements Serializable {
         this.longitude = longitude;
     }
 
-    public String getCoordinates() {
-        return latitude + "," + longitude;
+    public String getLocation() {
+        return (latitude == null || longitude == null) ? name : latitude + "," + longitude;
     }
 }

@@ -5,6 +5,8 @@ import com.qgasosa.backend.exception.common.InternalErrorException;
 import com.qgasosa.backend.maps.response.MapsResponse;
 import com.qgasosa.backend.maps.response.MapsMetricResponse;
 import com.qgasosa.backend.model.GasStation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +16,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class MapsClientImpl implements MapsClient {
+
+    private final Logger logger = LogManager.getLogger(MapsClientImpl.class);
+
     @Value("${api-key}")
     private String API_KEY;
 
@@ -50,6 +57,7 @@ public class MapsClientImpl implements MapsClient {
 
     private URL buildURL(String originLatitude, String originLongitude, GasStation gasStation) throws MalformedURLException {
         String originCoordinates = String.format("%s,%s", originLatitude, originLongitude);
-        return new URL(this.baseUrl + "?origin=" + originCoordinates + "&destination=" + gasStation.getAddress().getCoordinates() + "&key=" + this.API_KEY);
+        String destinationCoordinates = URLEncoder.encode(gasStation.getAddress().getLocation(), StandardCharsets.UTF_8);
+        return new URL(this.baseUrl + "?origin=" + originCoordinates + "&destination=" + destinationCoordinates + "&key=" + this.API_KEY);
     }
 }
