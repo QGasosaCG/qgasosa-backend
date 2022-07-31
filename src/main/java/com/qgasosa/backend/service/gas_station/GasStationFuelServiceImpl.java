@@ -79,7 +79,7 @@ public class GasStationFuelServiceImpl implements GasStationFuelService {
     private void createGasStationAndRetry(XlsUnitDTO xlsUnitDTO) {
         logger.info(String.format("Creating Gas Station '%s' - '%s' and retrying", xlsUnitDTO.gasStationName(), xlsUnitDTO.gasStationStreet()));
 
-        this.gasStationService.createGasStation(xlsUnitDTO.gasStationName(), xlsUnitDTO.gasStationStreet());
+        this.gasStationService.createGasStation(xlsUnitDTO.gasStationName(), xlsUnitDTO.gasStationStreet(), xlsUnitDTO.latitude(), xlsUnitDTO.longitude());
         this.updateGasStationFuel(xlsUnitDTO);
     }
 

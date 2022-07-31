@@ -19,7 +19,7 @@ public interface GasStationService {
 
     GasStation createGasStation(GasStationDTO gasStationDTO);
 
-    GasStation createGasStation(String gasStationName, String gasStationStreet);
+    GasStation createGasStation(String gasStationName, String gasStationStreet, String latitude, String longitude);
 
     void updateGasStation(Long id, GasStationDTO gasStationDTO);
 

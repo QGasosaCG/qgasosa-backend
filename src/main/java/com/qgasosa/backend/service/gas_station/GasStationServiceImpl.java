@@ -73,9 +73,12 @@ public class GasStationServiceImpl implements GasStationService {
 
     @Override
     @Transactional
-    public GasStation createGasStation(String gasStationName, String gasStationStreet) {
+    public GasStation createGasStation(String gasStationName, String gasStationStreet, String latitude, String longitude) {
         Address address = new Address();
         address.setName(gasStationStreet);
+        address.setLatitude(latitude);
+        address.setLongitude(longitude);
+
         this.addressRepository.save(address);
 
         GasStation gasStation = new GasStation(gasStationName, address);

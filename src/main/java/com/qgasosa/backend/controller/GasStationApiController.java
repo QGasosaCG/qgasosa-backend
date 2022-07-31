@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 @RequestMapping(Constants.API_BASE_URL + "/gas_station")
 public class GasStationApiController {
 

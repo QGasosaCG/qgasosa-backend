@@ -1,4 +1,4 @@
 package com.qgasosa.backend.dto;
 
-public record XlsUnitDTO(String gasStationName, String gasStationStreet, String fuelName, Double newPrice) {
+public record XlsUnitDTO(String gasStationName, String gasStationStreet, String latitude, String longitude, String fuelName, Double newPrice) {
 }
